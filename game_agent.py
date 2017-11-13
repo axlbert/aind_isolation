@@ -13,68 +13,116 @@ class SearchTimeout(Exception):
 def custom_score(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
+
     This should be the best heuristic function for your project submission.
+
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
+
     Parameters
     ----------
     game : `isolation.Board`
         An instance of `isolation.Board` encoding the current state of the
         game (e.g., player locations and blocked cells).
+
     player : object
         A player instance in the current game (i.e., an object corresponding to
         one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
     Returns
     -------
     float
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
+    if game.is_winner(player):
+        return float("inf")
+
+    ### custom scoring weight included
+    custom_scoring_2 = custom_score_2(game, player)
+    custom_scoring_3 = custom_score_3(game, player)
+
+    return 0.4 * custom_scoring_2 + 0.6 * custom_scoring_3
 
 
 def custom_score_2(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
+
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
+
     Parameters
     ----------
     game : `isolation.Board`
         An instance of `isolation.Board` encoding the current state of the
         game (e.g., player locations and blocked cells).
+
     player : object
         A player instance in the current game (i.e., an object corresponding to
         one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
     Returns
     -------
     float
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
+    if game.is_winner(player):
+        return float("inf")
+
+    ### agent with most moves remaining wins as a evaluation matrix
+    own_moves = len(game.get_legal_moves(player))
+    enemy_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+
+    ## the higher the integer the more greedy we will chase the enemy
+    return float(own_moves - 8 * enemy_moves)
 
 
 def custom_score_3(game, player):
     """Calculate the heuristic value of a game state from the point of view
     of the given player.
+
     Note: this function should be called from within a Player instance as
     `self.score()` -- you should not need to call this function directly.
+
     Parameters
     ----------
     game : `isolation.Board`
         An instance of `isolation.Board` encoding the current state of the
         game (e.g., player locations and blocked cells).
+
     player : object
         A player instance in the current game (i.e., an object corresponding to
         one of the player objects `game.__player_1__` or `game.__player_2__`.)
+
     Returns
     -------
     float
         The heuristic value of the current game state to the specified player.
     """
     # TODO: finish this function!
-    raise NotImplementedError
+    if game.is_loser(player):
+        return float("-inf")
+    if game.is_winner(player):
+        return float("inf")
+
+    ### agent with most moves remaining wins as a evaluation matrix
+    own_moves = len(game.get_legal_moves(player))
+    enemy_moves = len(game.get_legal_moves(game.get_opponent(player)))
+
+    if own_moves > 0:
+        score = 10 - enemy_moves
+    else:
+        score = 0
+
+    return float(score)
+
 
 
 class IsolationPlayer:
