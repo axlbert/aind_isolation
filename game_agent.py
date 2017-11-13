@@ -328,7 +328,7 @@ class AlphaBetaPlayer(IsolationPlayer):
         best_move = (-1,-1)
 
         for i in game.get_legal_moves():
-            score = self.min_value(game.forecast_move(m), depth-1, alpha, beta)
+            score = self.min_value(game.forecast_move(i), depth-1, alpha, beta)
             if score > best_score:
                 best_score = score
                 best_move = i
@@ -347,7 +347,7 @@ class AlphaBetaPlayer(IsolationPlayer):
 
 ###functions can be recycled from above except puttin in alpha and beta params
 
-    def min_value(self, game, depth):
+    def min_value(self, game, depth, alpha, beta):
         #returns score for win if max depth within time achieved or return min over child nodes
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
@@ -366,7 +366,7 @@ class AlphaBetaPlayer(IsolationPlayer):
 
         return score
 
-    def max_value(self, game, depth):
+    def max_value(self, game, depth, alpha, beta):
         #returns score for loss if max depth is achieved or returns max over all childs
         if self.time_left() < self.TIMER_THRESHOLD:
             raise SearchTimeout()
